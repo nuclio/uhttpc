@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.9-alpine3.6 as builder
+FROM golang:1.10 as builder
 
 ARG ARCH=amd64
 ARG SRC_DIR=/go/src/github.com/nuclio/uhttpc
@@ -22,9 +22,9 @@ COPY . ${SRC_DIR}
 
 # make the processor binary
 RUN mkdir -p /home/nuclio/bin \
-    && GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /home/nuclio/bin/uhttpc ${SRC_DIR}/main.go
+    && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s -w" -o /home/nuclio/bin/uhttpc ${SRC_DIR}/main.go
 
-FROM alpine:3.6
+FROM scratch
 
 # just copy the binary
 COPY --from=builder /home/nuclio/bin/uhttpc /home/nuclio/bin/uhttpc

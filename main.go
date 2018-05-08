@@ -18,8 +18,8 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"flag"
+	"fmt"
 	"net/http"
 	"os"
 )
