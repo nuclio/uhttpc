@@ -1,0 +1,30 @@
+# Copyright 2017 The Nuclio Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+FROM golang:1.9-alpine3.6 as builder
+
+ARG ARCH=amd64
+ARG SRC_DIR=/go/src/github.com/nuclio/uhttpc
+
+# copy source to source dir
+COPY . ${SRC_DIR}
+
+# make the processor binary
+RUN mkdir -p /home/nuclio/bin \
+    && GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /home/nuclio/bin/uhttpc ${SRC_DIR}/main.go
+
+FROM alpine:3.6
+
+# just copy the binary
+COPY --from=builder /home/nuclio/bin/uhttpc /home/nuclio/bin/uhttpc
