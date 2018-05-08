@@ -18,10 +18,10 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"flag"
 	"net/http"
 	"os"
-	"fmt"
 )
 
 func sendRequest(url string) error {
