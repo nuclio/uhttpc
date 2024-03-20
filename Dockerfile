@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.10 as builder
+FROM golang:1.22 as builder
 
-ARG ARCH=amd64
+ARG GOARCH=amd64
 ARG SRC_DIR=/go/src/github.com/nuclio/uhttpc
 
 # copy source to source dir
-COPY . ${SRC_DIR}
+COPY go.mod main.go ${SRC_DIR}/
 
 # make the processor binary
 RUN mkdir -p /home/nuclio/bin \
-    && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s -w" -o /home/nuclio/bin/uhttpc ${SRC_DIR}/main.go
+    && GOOS=linux GOARCH=${GOARCH} CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s -w" -o /home/nuclio/bin/uhttpc ${SRC_DIR}/main.go
 
 FROM scratch
 

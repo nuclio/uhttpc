@@ -1,5 +1,5 @@
 /*
-Copyright 2017 The Nuclio Authors.
+Copyright 2024 The Nuclio Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
 
 func sendRequest(url string) error {
@@ -29,6 +30,7 @@ func sendRequest(url string) error {
 		return errors.New("URL must be set")
 	}
 
+	http.DefaultClient.Timeout = time.Second * 60
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -38,7 +40,6 @@ func sendRequest(url string) error {
 
 	return nil
 }
-
 
 func main() {
 	url := flag.String("url", "", "Remote URL (e.g. localhost:8070)")
