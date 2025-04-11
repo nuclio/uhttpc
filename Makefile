@@ -1,6 +1,6 @@
 # Variables
 DOCKER_IMAGE_NAME := quay.io/nuclio/uhttpc
-DOCKER_IMAGE_TAG := 0.0.2
+DOCKER_IMAGE_TAG := 0.0.3
 DOCKER_BUILD_ARGS := --build-arg GOARCH=amd64
 DOCKER_BUILD_ARGS_ARMHF := --build-arg GOARCH=arm
 DOCKER_BUILD_ARGS_ARM64 := --build-arg GOARCH=arm64
